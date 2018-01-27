@@ -57,6 +57,7 @@
                 url: "getUploadProgress",
                 timeout: 2000,
                 async: true,
+                cache : false,
                 success: function(res) {
                     var readBytes =  res.readBytes;
                     var allBytes = res.allBytes;
