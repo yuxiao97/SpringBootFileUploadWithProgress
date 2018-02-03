@@ -27,10 +27,13 @@
             auto : false,   //关闭文件自动上传
             bindAction : "#upload", //文件上传触发按钮
             url : "upload",
+            progress:function(value){//上传进度回调 value进度值
+                element.progress('uploadProgressBar', value+'%')//设置页面进度条
+            },
             before : function (obj) {
-                var intId = setInterval(function () {
+               /* var intId = setInterval(function () {
                     getUploadStatus(intId);
-                }, 1000); //每秒向服务端获取一次当前上传进度情况
+                }, 1000); //每秒向服务端获取一次当前上传进度情况*/
             },
             done : function (res, index, upload) {
                 if(res.code != 200){
@@ -46,32 +49,6 @@
             }
         });
 
-
-        /**
-         * 向服务的轮询上传进度
-         * @param intId  定时器事件ID
-         */
-        function getUploadStatus(intId) {
-            $.ajax({
-                type: "get",
-                url: "getUploadProgress",
-                timeout: 2000,
-                async: true,
-                cache : false,
-                success: function(res) {
-                    var readBytes =  res.readBytes;
-                    var allBytes = res.allBytes;
-                    var index = res.currentIndex;
-                    var progress = (readBytes/allBytes*100).toFixed(1);
-                    // 设置进度条百分比
-                    element.progress('uploadProgressBar', progress+'%');
-                    if(progress == 100){
-                        layer.msg("上传完成！")
-                        clearInterval(intId);   //停止轮询
-                    }
-                }
-            });
-        }
     });
 </script>
 </html>
